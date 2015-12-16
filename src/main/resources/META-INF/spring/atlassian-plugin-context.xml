@@ -6,6 +6,7 @@
 
     <bean id="slackService" class="eu.kandru.jko.bitbucket.slackifier.slack.SlackService">
         <constructor-arg index="0" ref="settingsService"/>
+        <constructor-arg index="1" ref="webResourceUrlProvider"/>
     </bean>
     <bean id="pullRequestListener" class="eu.kandru.jko.bitbucket.slackifier.events.PullRequestListener">
         <constructor-arg index="0" ref="slackService"/>

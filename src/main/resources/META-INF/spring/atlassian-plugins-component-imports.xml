@@ -14,4 +14,5 @@
     <osgi:reference id="ao" interface="com.atlassian.activeobjects.external.ActiveObjects"/>
     <osgi:reference id="userService" interface="com.atlassian.bitbucket.user.UserService"/>
     <osgi:reference id="pullRequestService" interface="com.atlassian.bitbucket.pull.PullRequestService"/>
+    <osgi:reference id="avatarService" interface="com.atlassian.bitbucket.avatar.AvatarService"/>
 </beans>

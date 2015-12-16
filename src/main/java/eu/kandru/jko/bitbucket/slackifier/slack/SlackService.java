@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.atlassian.plugin.webresource.UrlMode;
+import com.atlassian.plugin.webresource.WebResourceUrlProvider;
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackMessageHandle;
 import com.ullink.slack.simpleslackapi.SlackSession;
@@ -18,15 +20,18 @@ import com.ullink.slack.simpleslackapi.replies.SlackReply;
 
 import eu.kandru.jko.bitbucket.slackifier.ao.SettingsService;
 import eu.kandru.jko.bitbucket.slackifier.slack.messages.SlackPreparedMessage;
+import eu.kandru.jko.bitbucket.slackifier.util.ResourceConstants;
 
 public class SlackService {
   private static final Logger LOG = LoggerFactory.getLogger(SlackService.class);
   private SettingsService settingsService;
+  private WebResourceUrlProvider webResourceUrlProvider;
 
   private SlackSession session;
 
-  public SlackService(SettingsService settingsService) {
+  public SlackService(SettingsService settingsService, WebResourceUrlProvider webResourceUrlProvider) {
     this.settingsService = settingsService;
+    this.webResourceUrlProvider = webResourceUrlProvider;
   }
 
   public void connect() {
@@ -149,7 +154,8 @@ public class SlackService {
   }
 
   private SlackChatConfiguration getConfig() {
-    return SlackChatConfiguration.getConfiguration().withName("Bitbucket Bot");
+    return SlackChatConfiguration.getConfiguration().withName("Bitbucket Bot").withIcon(webResourceUrlProvider
+        .getStaticPluginResourceUrl(ResourceConstants.GENERAL, "images/bitbucket_icon.png", UrlMode.ABSOLUTE));
   }
 
   public SlackUser findUserById(String id) {
