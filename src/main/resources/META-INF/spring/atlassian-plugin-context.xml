@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="slackService" class="eu.kandru.jko.bitbucket.slackifier.slack.SlackService">
+        <constructor-arg index="0" ref="settingsService"/>
+    </bean>
+    <bean id="pullRequestListener" class="eu.kandru.jko.bitbucket.slackifier.events.PullRequestListener">
+        <constructor-arg index="0" ref="slackService"/>
+        <constructor-arg index="1" ref="navBuilder"/>
+        <constructor-arg index="2" ref="linkedUserService"/>
+        <constructor-arg index="3" ref="pullRequestMapper"/>
+    </bean>
+    <bean id="slackSettingsServlet" class="eu.kandru.jko.bitbucket.slackifier.servlet.SlackSettingsServlet">
+        <constructor-arg index="0" ref="settingsService"/>
+        <constructor-arg index="1" ref="soyTemplateRenderer"/>
+        <constructor-arg index="2" ref="navBuilder"/>
+        <constructor-arg index="3" ref="permissionService"/>
+        <constructor-arg index="4" ref="slackService"/>
+    </bean>
+    <bean id="slackUserChangeServlet" class="eu.kandru.jko.bitbucket.slackifier.servlet.SlackUserChangeServlet">
+        <constructor-arg index="0" ref="soyTemplateRenderer"/>
+        <constructor-arg index="1" ref="navBuilder"/>
+        <constructor-arg index="2" ref="slackService"/>
+        <constructor-arg index="3" ref="linkedUserService"/>
+    </bean>
+    <bean id="slackUserPanel" class="eu.kandru.jko.bitbucket.slackifier.web.SlackUserPanel">
+        <constructor-arg index="0" ref="linkedUserService"/>
+        <constructor-arg index="1" ref="soyTemplateRenderer"/>
+        <constructor-arg index="2" ref="webResourceUrlProvider"/>
+    </bean>
+    <bean id="linkedUserService" class="eu.kandru.jko.bitbucket.slackifier.ao.LinkedUserServiceImpl">
+    	<constructor-arg index="0" ref="ao"/>
+    	<constructor-arg index="1" ref="userService"/>
+    	<constructor-arg index="2" ref="slackService"/>
+    </bean>
+    <bean id="settingsService" class="eu.kandru.jko.bitbucket.slackifier.ao.SettingsServiceImpl">
+    	<constructor-arg index="0" ref="ao"/>
+    </bean>
+    <bean id="pullRequestMapper" class="eu.kandru.jko.bitbucket.slackifier.ao.PullRequestMapperImpl">
+    	<constructor-arg index="0" ref="ao"/>
+    	<constructor-arg index="1" ref="pullRequestService"/>
+    	<constructor-arg index="2" ref="slackService"/>
+    </bean>
+
+</beans>

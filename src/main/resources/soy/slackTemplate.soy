@@ -1,0 +1,84 @@
+{namespace eu.kandru.jko.bitbucket.slackifier}
+
+/**
+ * Inserts a name with a slack image
+ * @param icon String object with link to slack icon
+ * @param slackName String object with the slackName
+ */
+{template .slackNameLabel}
+<div class="user-detail slack">
+  <span class="aui-icon aui-icon-small" style="background-size:100%;background-image: url('{$icon}');"></span>
+  <span>&#64;{$slackName}</span>
+</div>
+{/template}
+
+/**
+ * @param user ApplicationUser object 
+ * @param slackName String the current slackname
+ * @param postUrl url String POST destination
+ */
+{template .slackNameServlet}
+<html>
+<head>
+    <meta name="decorator" content="bitbucket.users.account">
+    <meta name="userSlug" content="{$user.slug}">
+    <meta name="activeTab" content="slackUserNameSetLink">
+    <title>{$user.displayName} / Slackname</title>
+</head>
+<body>
+  <header class="aui-page-header">
+    <div class="aui-page-geader-inner">
+      <div class="aui-page-header-main">
+        <h2>Slacknamen ändern</h2>
+      </div>
+    </div>
+  </header>
+  <form class="aui prevent-double-submit" action="{$postUrl}" method="post" accept-charset="UTF-8">
+  <div class="field-group">
+    <label for="slackName">Slackname</label>
+    <input class="text" type="text" id="slackName" name="slackName" value="{$slackName}" autocomplete="off"/>
+  </div>
+  <div class="buttons-container">
+    <div class="buttons">
+      <input class="aui-button aui-button-primary" type="submit" value="Speichern"/>
+    </div>
+  </div>
+  </form>
+</body>
+</html>
+{/template}
+
+
+/**
+ * @param apiKey String object with slack api key
+ * @param postUrl url String POST destination
+ */
+{template .slackSettingsServlet}
+<html>
+<head>
+    <meta name="decorator" content="atl.admin">
+    <meta name="activeTab" content="slack-settings-servlet">
+    <title>Slack Settings</title>
+</head>
+<body>
+  <header class="aui-page-header">
+    <div class="aui-page-geader-inner">
+      <div class="aui-page-header-main">
+        <h2>Slackeinstellungen</h2>
+      </div>
+    </div>
+  </header>
+  <form class="aui prevent-double-submit" action="{$postUrl}" method="post" accept-charset="UTF-8">
+  <div class="field-group">
+    <label for="slackApi">Slack API Key</label>
+    <input class="text" type="text" id="slackApi" name="slackApi" value="{$apiKey}" autocomplete="off"/>
+  </div>
+  <div class="buttons-container">
+    <div class="buttons">
+      <input class="aui-button aui-button-primary" type="submit" value="Speichern"/>
+    </div>
+  </div>
+  </form>
+</body>
+</html>
+{/template}

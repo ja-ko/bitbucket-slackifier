@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="slackifier"/>
+  <!-- add our web resources -->
+  <web-resource key="slackifier-resources" name="slackifier Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="slackifier.css" location="/css/slackifier.css"/>
+    <resource type="download" name="slackifier.js" location="/js/slackifier.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>slackifier</context>
+  </web-resource>
+  
+  <client-resource key="soyTemplates" name="Soy Templates">
+    <directory location="/soy/"/>
+  </client-resource>
+  
+  <web-panel class="eu.kandru.jko.bitbucket.slackifier.web.SlackUserPanel" key="slackUserNamePanel" location="bitbucket.user.profile.header.details"/>
+  
+  <web-item key="slackUserNameSetLink" name="Set slackusername" section="bitbucket.user.account.nav" weight="20">
+    <label key="slackuser.set.link">Slacknamen setzen</label>
+    <link>/plugins/servlet/account/slackname</link>
+    <tooltip key="slackuser.set.tooltip">Setze deinen Slack Benutzernamen</tooltip>
+  </web-item>
+  
+  <web-item key="slackSettingsLink" name="Slack Settings" section="atl.admin/admin-plugins-section" weight="20">
+    <label key="slack.settings.link">Slack-Integration</label>
+    <link>/plugins/servlet/admin/slack/settings</link>
+    <tooltip key="slack.settings.tooltip">Konfiguriere die Slackintegration</tooltip>
+  </web-item>
+  
+  <servlet name="Slack User Change Servlet" i18n-name-key="slack-user-change-servlet.name" key="slack-user-change-servlet" class="eu.kandru.jko.bitbucket.slackifier.servlet.SlackUserChangeServlet">
+    <description key="slack-user-change-servlet.description">The Slack User Change Servlet Plugin</description>
+    <url-pattern>/account/slackname</url-pattern>
+  </servlet>
+  
+  <servlet name="Slack Settings Servlet" i18n-name-key="slack-settings-servlet.name" key="slack-settings-servlet" class="eu.kandru.jko.bitbucket.slackifier.servlet.SlackSettingsServlet">
+    <description key="slack-settings-servlet.description">The SlackSettings Servlet</description>
+    <url-pattern>/admin/slack/settings</url-pattern>
+  </servlet>
+
+  <component key="slackService" class="eu.kandru.jko.bitbucket.slackifier.slack.SlackService" />
+  <component key="pullRequestListener" class="eu.kandru.jko.bitbucket.slackifier.events.PullRequestListener" />
+  
+  <component key="tx-processor" name="Transactional Annotation Processor"
+    class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
+    <decription>Processes @Transactional annotations.</decription>
+  </component>
+  
+  <ao key="ao-module">
+    <description>The module configuring the Active Objects service used by this plugin</description>
+    <entity>eu.kandru.jko.bitbucket.slackifier.ao.LinkedUser</entity>
+    <entity>eu.kandru.jko.bitbucket.slackifier.ao.Settings</entity>
+    <entity>eu.kandru.jko.bitbucket.slackifier.ao.MappedPullRequest</entity>
+  </ao>
+  
+  <component-import key="navBuilder" interface="com.atlassian.bitbucket.nav.NavBuilder" filter=""/>
+  <component-import key="permissionService" interface="com.atlassian.bitbucket.permission.PermissionService" filter=""/>
+  <component-import key="soyTemplateRenderer" interface="com.atlassian.soy.renderer.SoyTemplateRenderer" filter=""/>
+  <component-import key="webResourceUrlProvider" interface="com.atlassian.plugin.webresource.WebResourceUrlProvider" filter=""/>
+</atlassian-plugin>
