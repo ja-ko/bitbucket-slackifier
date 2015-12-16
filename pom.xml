@@ -6,8 +6,8 @@
     <artifactId>slackifier</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Jannik Kolodziej</name>
+        <url>https://github.com/drahti/</url>
     </organization>
     <name>slackifier</name>
     <description>This is the eu.kandru.jko.bitbucket:slackifier plugin for Atlassian Bitbucket Server.</description>
